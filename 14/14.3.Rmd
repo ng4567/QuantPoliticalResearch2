@@ -1,0 +1,197 @@
+---
+title: '14.3'
+author: "Nikhil Gopal"
+date: "2/8/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(rstanarm)
+library(tidyverse)
+```
+
+**14.3**
+
+Graphing logistic regressions: The well-switching data described in Section 13.7 are in the
+folder Arsenic
+
+A:
+
+Fit a logistic regression for the probability of switching using log (distance to nearest safe
+well) as a predictor.
+
+```{r}
+wells$dist100 <- wells$dist/100
+
+fit_1 <- stan_glm(formula = switch ~ log(dist), family=binomial(link="logit"),
+          data=wells)
+
+
+print(fit_1)
+```
+
+B:
+
+Make a graph similar to Figure 13.8b displaying Pr(switch) as a function of distance to
+nearest safe well, along with the data.
+
+```{r}
+#code from p 252 in text
+jitter_binary <- function(a, jitt=0.05){
+ifelse(a==0, runif(length(a), 0, jitt), runif(length(a), 1 - jitt, 1))
+}
+
+wells$switch_jitter <- jitter_binary(wells$switch)
+plot(wells$dist, wells$switch_jitter, xlab = "Distance from Well", ylab = "Pr(Switch)")
+curve(invlogit(coef(fit_1)[1] + coef(fit_1)[2]*x), add=TRUE)
+
+```
+
+C:
+
+Make a residual plot and binned residual plot as in Figure 14.8.
+
+```{r}
+#Residual plot
+plot(fit_1$fitted.values, fit_1$residuals, main = "Residual Plot",
+     xlab = "Estimated Pr(switching)", ylab = "Residual")
+
+
+#using rstanarm library
+pp_check(fit_1, plotfun = "error_binned")
+
+
+#using arm (https://rdrr.io/cran/arm/man/binnedplot.html), more like book graph
+arm::binnedplot(x = fit_1$fitted.values, fit_1$residuals,
+                xlab = "Estimated Pr(Switching)", 
+                main = "Binned Residual vs. Predicted Values", 
+                col.int = "gray", nclass = 40)
+```
+
+D:
+
+Compute the error rate of the fitted model and compare to the error rate of the null model.
+
+
+```{r}
+#calculate predictions
+wells$predicted <- predict(fit_1, newdata = wells, type = "response")
+
+#fit null model
+null_model <- stan_glm(formula = switch ~ 1, family=binomial(link="logit"),
+          data=wells)
+
+#code from p 273 to compute error rate of models
+error_rate_fit <- mean((wells$predicted>0.5 & wells$switch==0) | (wells$predicted<0.5 & wells$switch==1))
+
+#We can compare it to the error rate of the null model, which is simply to assign the same probability to each yi. This is simply logistic regression with only a constant term, and the estimated probability will simply be the proportion of 1’s in the data, or p = n i=1 yi/n (recalling that each yi = 0 or 1). The error rate of the null model is then p or 1−p, whichever is lower
+
+prop_1_in_data <- table(wells$switch)
+
+prop_1_in_data <- 1737/3020
+
+error_rate_null <- 1 - prop_1_in_data
+
+df <- data.frame(
+  "model" <- c("Fitted", "Null"),
+  "error" <- c(error_rate_fit, error_rate_null))
+
+colnames(df) <- c("model", "error")
+
+print(paste("Fitted model error: ", round(error_rate_fit, 3)))
+print(paste("Null model error: ", round(error_rate_null, 3)))
+
+bp <- barplot(df$error, names.arg = df$model, main = "Barplot of Fitted vs Null Model Error")
+text(bp, 0, round(df$error, 3),cex=1,pos=3) 
+```
+
+E:
+
+Create indicator variables corresponding to dist < 100; dist between 100 and 200; and
+dist > 200. Fit a logistic regression for Pr(switch) using these indicators. With this new
+model, repeat the computations and graphs for part (a) of this exercise.
+
+Create indicator variables and fit model:
+
+```{r}
+
+wells$less_100 <- ifelse(wells$dist < 100, 1, 0)
+wells$greater_200 <- ifelse(wells$dist > 200, 1, 0)
+wells$between <- ifelse(wells$dist < 200 & wells$dist > 100, 1, 0)
+
+wells$less_100 <- as.factor(wells$less_100)
+wells$greater_200 <- as.factor(wells$greater_200)
+wells$between <- as.factor(wells$between)
+
+fit_2 <- stan_glm(formula = switch ~ less_100 + greater_200 + between, family=binomial(link="logit"),
+          data=wells)
+
+```
+
+Distance from well vs Pr(switch):
+```{r}
+#code from p 252 in text
+jitter_binary <- function(a, jitt=0.05){
+ifelse(a==0, runif(length(a), 0, jitt), runif(length(a), 1 - jitt, 1))
+}
+
+wells$switch_jitter <- jitter_binary(wells$switch)
+plot(wells$dist, wells$switch_jitter, xlab = "Distance from Well", ylab = "Pr(Switch)")
+curve(invlogit(coef(fit_2)[1] + coef(fit_2)[2]*x), add=TRUE)
+
+```
+
+Residual and Binned Plots:
+```{r}
+#Residual plot
+plot(fit_2$fitted.values, fit_2$residuals, main = "Residual Plot",
+     xlab = "Estimated Pr(switching)", ylab = "Residual")
+
+
+#using rstanarm library
+pp_check(fit_2, plotfun = "error_binned")
+
+
+#using arm (https://rdrr.io/cran/arm/man/binnedplot.html), more like book graph
+arm::binnedplot(x = fit_2$fitted.values, fit_2$residuals,
+                xlab = "Estimated Pr(Switching)", 
+                main = "Binned Residual vs. Predicted Values", 
+                col.int = "gray", nclass = 40)
+```
+
+
+Error rate calculation:
+
+```{r}
+#calculate predictions
+wells$predicted_2 <- predict(fit_2, newdata = wells, type = "response")
+
+
+#code from p 273 to compute error rate of models
+error_rate_fit_2 <- mean((wells$predicted_2>0.5 & wells$switch==0) | (wells$predicted_2<0.5 & wells$switch==1))
+
+#We can compare it to the error rate of the null model, which is simply to assign the same probability to each yi. This is simply logistic regression with only a constant term, and the estimated probability will simply be the proportion of 1’s in the data, or p = n i=1 yi/n (recalling that each yi = 0 or 1). The error rate of the null model is then p or 1−p, whichever is lower
+
+prop_1_in_data <- table(wells$switch)
+
+prop_1_in_data <- 1737/3020
+
+error_rate_null <- 1 - prop_1_in_data
+
+df2 <- data.frame(
+  "model" <- c("Fitted", "Null"),
+  "error" <- c(error_rate_fit_2, error_rate_null))
+
+colnames(df2) <- c("model", "error")
+
+print(paste("Fitted model error: ", round(error_rate_fit_2, 3)))
+print(paste("Null model error: ", round(error_rate_null, 3)))
+
+bp <- barplot(df$error, names.arg = df2$model, main = "Barplot of Fitted vs Null Model Error")
+text(bp, 0, round(df2$error, 3),cex=1,pos=3) 
+```
+
+This model had an error rate of 0.4092715, which is slightly higher compared to our original model's error rate of 0.4056291. Thus, in terms of making predictions on this dataset, our original model is better than using this indicator model.

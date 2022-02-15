@@ -1,0 +1,84 @@
+---
+title: '13.1'
+author: "Nikhil Gopal"
+date: "1/26/2022"
+output: pdf_document
+---
+**Problem 13.1** 
+
+Fitting logistic regression to data: The folder NES contains the survey data of presidential preference and income for the 1992 election analyzed in Section 13.1, along with other variables including sex, ethnicity, education, party identification, and political ideology.
+
+
+```{r}
+rm(list = ls())
+library(rosdata)
+library(lmtest)
+data <- data(nes)
+
+```
+
+**13.1 (a)**
+
+Fit a logistic regression predicting support for Bush given all these inputs. Consider how to include these as regression predictors and also consider possible interactions.
+
+sex, ethnicity, education, party identification, and political ideology.
+
+
+Fit logistic regression model:
+
+```{r}
+logistic <- glm(rep_presvote ~ female + race + educ1 + educ2 + educ3, + partyid3 + ideo_feel, 
+             data = nes, family = binomial)
+
+summary(logistic)
+```
+
+
+Normal regression:
+
+```{r}
+ols <- lm(rep_presvote ~ female + race + educ1 + educ2 + educ3, + partyid3 + ideo_feel, 
+             data = nes)
+
+summary(ols)
+```
+
+Interactions:
+
+```{r}
+interactions <- glm(rep_presvote ~ female + race + educ1 + educ2 + educ3, + partyid3 + ideo_feel + female*race + educ1*partyid3 + race*partyid3, 
+             data = nes, family = binomial)
+
+summary(interactions)
+```
+
+
+**13.1 (b)** 
+
+Evaluate and compare the different models you have fit.
+
+```{r}
+
+lrtest(logistic, interactions)
+
+```
+
+Above I ran a likelihood ratio test to test model fit between the logistic regression model and the logistic regression model with interactions. I decided not to consider the normal regression model as it had an R^2 value of 0.07 and thus I could determine quickly that the model had poor fit.
+
+Above, I tested the null hypothesis that the logistic regression model fit the data better than the interaction model. The test returned an extremely small near zero value below our traditional threshold of 0.05. Thus, we can reject the null hypothesis that the normal logistic regression model fits the data better and conclude that the interaction model fits the data best.
+
+
+**13.1 (c)**
+
+For your chosen model, discuss and compare the importance of each input variable in the
+prediction.
+
+```{r}
+
+summary(interactions)
+
+confint(interactions)
+```
+
+We see here that being female decreases the log odds of voting for bush by a a factor of 0.263690. For every 1 increase in cateogries of race, education1 and education 3, the log odds of voting for bush decrease by factor of -0.335920, -0.046220 and -0.330435 respectively. Finally, education2 turned out to be the most influential variable. For every 1 unit increase in education 2, the log odds of voting for Bush increased by a factor of 0.567140.
+

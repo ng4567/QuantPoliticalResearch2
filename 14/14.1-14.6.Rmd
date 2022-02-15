@@ -1,0 +1,46 @@
+---
+title: "Untitled"
+author: "Nikhil Gopal"
+date: "2/5/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(rstanarm)
+library(arm)
+
+```
+
+**14.1:** 
+
+```{r}
+
+x <- runif(n = 50, min = -20, max = 20)
+y <- invlogit(0.4 - 0.3 * x)
+plot(x, y)
+curve(invlogit(0.4  - 0.3 * x), xlim = c(-20, 20), from = -20, to = 20, col = "red", add = T)
+
+```
+
+
+**14.6:**
+
+```{r}
+x <- 1:20
+y <- sample(c(0,1), 20, replace = TRUE)
+
+
+df <- data.frame(cbind(x,y))
+
+bad_logit <- stan_glm(y ~ x, family = binomial(link = "logit"), data = df)
+
+print(bad_logit)
+
+
+#graph the
+plot(df$x, invlogit(coef(bad_logit)[1] + coef(bad_logit)[2]*x))
+curve(invlogit(coef(bad_logit)[1] + coef(bad_logit)[2]*x), add=TRUE, col = "blue")
+
+```
+I randomly sampled from a vector containing values of 0/1, so there was approximately a 50% chance of a given x's value being 0 or 1. As you can see from the graph, the curve does not move with the data, because I designed the y values to have no relationship with the predictors, and to just be generated randomly.

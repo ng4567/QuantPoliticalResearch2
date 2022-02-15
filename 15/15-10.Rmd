@@ -1,0 +1,11 @@
+---
+title: '15.10'
+author: "Nikhil Gopal"
+date: "2/15/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(rstanarm)
+```

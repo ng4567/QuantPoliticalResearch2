@@ -1,0 +1,84 @@
+---
+title: "Untitled"
+author: "Nikhil Gopal"
+date: "2/5/2022"
+output: html_document
+---
+
+**13.13 partner project**
+
+```{r, message=FALSE}
+rm(list = ls())
+library(tidyverse)
+library(rstanarm)
+```
+
+In this project, we will seek to fit a logistic regression model to predict a state's outcome in the 2020 US presidential election, with income and percentage of white residents as predictors.
+
+**Import and Clean Data**
+
+Presidential election outcome data source:
+
+https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/42MVDX
+
+Income data source:
+
+https://www.kff.org/other/state-indicator/median-annual-income/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
+
+Race data source:
+
+https://www.kff.org/other/state-indicator/population-distribution-by-race-ethnicity-cps/?currentTimeframe=0&sortModel=%7B%22colId%22:%22Location%22,%22sort%22:%22asc%22%7D
+
+
+```{r}
+
+presidental <- read.csv("2020outcomes.csv")
+presidental <- presidental[1:2]
+
+#note that you have to delete the first 2 rows to get the data frame to be recognized by R
+income <- read.csv("income.csv")
+income <- income[2:52,1:2]
+colnames(income) <- c("state", "income")
+
+#note that you have to delete the first 2 rows to get the data frame to be recognized by R
+race <- read.csv("race.csv")
+race <- race[2:52,1:2]
+colnames(race) <- c("state", "pct_white")
+
+df <- merge(income,race,by = "state")
+df <- merge(df, presidental, by = "state")
+```
+
+
+**Fit Logistic Regression Model:**
+
+```{r, message=FALSE}
+#recode D/R to 1/0
+df$called <- recode(df$called, D = 1, R = 0)
+
+df$income <- gsub("\\$", "", df$income)
+df$income <- gsub("\\,", "", df$income)
+df$income <- as.numeric(df$income)
+
+fit <- stan_glm(called ~ income + pct_white, family = binomial(link = "logit"), data = df)
+
+fit2 <- stan_glm(called ~ pct_white, family = binomial(link = "logit"), data = df)
+```
+
+Print the summary:
+
+```{r}
+print(fit)
+```
+
+Graph the model (remove income to make it easier to graph as coefficient was 0):
+
+```{r}
+
+plot(df$pct_white, invlogit(coef(fit2)[1] + coef(fit2)[2]*df$pct_white))
+curve(invlogit(coef(fit2)[1] + coef(fit2)[2]*x), xlim = c(0, 1), from = 0, to = 1, col = "red", add = T)
+```
+
+We fit a model predicting weather or not a state would vote for Democrats in the 2020 presidential election. We used the percentage of white residents in the state as a predictor and  removed the income variable from the model, as the coefficient was zero when we originally fit. This coefficient value predicts that the log odds of a state voting democrat decreases by 3.8 for every 1 percentage increase in a state's white population. This effect is also shown in the graph above.
+
+

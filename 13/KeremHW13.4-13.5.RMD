@@ -1,0 +1,52 @@
+---
+title: "Homework 02/02/2022"
+author: "Kerem Tuncer"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+  word_document: default
+---
+
+## Question 13.4
+
+Below you can find the fitted model as two curves on a graph of Pr(y = 1) vs. x. The red and the blue lines combined represent the curve for the x variable, which ranges from 0 to 10. Likewise, the blue line represents the curve for the z variable, which is a binary predictor.
+
+```{r}
+curve(invlogit(-1.9 + 0.7 * x), xlim = c(0, 15), from = 0, to = 10, col = "red")
+curve(invlogit(-1.9 + 0.7 * x), xlim = c(0, 15), from = 0, to = 1, add = TRUE, col = "blue")
+```
+
+## Question 13.5
+
+### Part A
+
+```{r}
+library(rstanarm)
+dat <- read.csv("wells.csv")
+fit_1 <- stan_glm(formula = switch ~ dist100 + arsenic, family=binomial(link="logit"),
+          data=dat)
+print(fit_1)
+```
+
+When we implement the divide-by-4 rule, the expected difference in the probability of switch, per unit change in arsenic, is 0.46 divided by 4 = 0.115 with standard error 0.04/4 = 0.01. Given that we are interested in a difference of 1-0.5 = 0.5, we will multiply these values by 0.5. At the end, we get 0.115*5 = 0.0575 with a standard error of 0.01(5) = 0.005. Then, our 95% confidence interval will be
+[0.0575 +/- 2*0.005] = [0.0475, 0.0675]. Finally, our 50% confidence interval will be [0.0575 +/- (0.67449)(0.005)] = [0.0541, 0.0609]
+
+### Part B
+
+```{r}
+new <- data.frame(dist100 = 0.5, arsenic = 0.5)
+pred1 <- predict(fit_1, type="response", newdata=new, se.fit = T)
+pred1
+
+new <- data.frame(dist100 = 0.5, arsenic = 1)
+pred2 <- predict(fit_1, type="response", newdata=new, se.fit = T)
+pred2
+
+(pred2$fit - pred1$fit)
+(pred1$se.fit - pred2$se.fit)
+```
+
+When we do a predictice simulation, the expected difference in the probability of switch, per unit change in arsenic, is 0.0574 with a standard error of 0.003. Then, our 95% confidence interval will be
+[0.0574 +/- 2*0.003] = [0.0514, 0.0634]. Finally, our 50% confidence interval will be [0.0574 +/- (0.67449)(0.003)] = [0.0554, 0.0594].

@@ -1,0 +1,65 @@
+﻿Location,White,Black,Hispanic,Asian,American Indian/Alaska Native,Native Hawaiian/Other Pacific Islander,Multiple Races,Total
+United States,0.596,0.124,0.188,0.06,0.008,0.003,0.021,1
+Alabama,0.655,0.268,0.039,N/A,N/A,N/A,0.013,1
+Alaska,0.565,0.032,0.061,0.064,0.189,N/A,0.067,1
+Arizona,0.533,0.05,0.354,0.031,0.014,N/A,0.019,1
+Arkansas,0.714,0.148,0.083,0.014,N/A,N/A,0.024,1
+California,0.366,0.054,0.402,0.149,0.004,0.004,0.02,1
+Colorado,0.685,0.043,0.2,0.036,N/A,N/A,0.016,1
+Connecticut,0.64,0.111,0.18,0.058,N/A,N/A,0.01,1
+Delaware,0.609,0.211,0.097,0.051,N/A,N/A,0.026,1
+District of Columbia,0.402,0.434,0.101,0.04,N/A,N/A,0.021,1
+Florida,0.516,0.153,0.277,0.029,N/A,N/A,0.02,1
+Georgia,0.501,0.312,0.119,0.045,0.004,N/A,0.018,1
+Hawaii,0.202,0.014,0.095,0.376,N/A,0.137,0.173,1
+Idaho,0.802,0.008,0.14,0.014,N/A,N/A,0.019,1
+Illinois,0.614,0.14,0.168,0.062,N/A,N/A,0.013,1
+Indiana,0.788,0.099,0.058,0.022,0.002,N/A,0.026,1
+Iowa,0.852,0.042,0.06,0.03,N/A,N/A,0.013,1
+Kansas,0.751,0.056,0.117,0.024,N/A,N/A,0.03,1
+Kentucky,0.816,0.084,0.047,0.024,N/A,N/A,0.021,1
+Louisiana,0.573,0.322,0.065,0.022,0.004,N/A,0.014,1
+Maine,0.942,0.018,N/A,N/A,N/A,N/A,N/A,1
+Maryland,0.496,0.309,0.08,0.089,N/A,N/A,0.025,1
+Massachusetts,0.7,0.077,0.124,0.073,N/A,N/A,0.025,1
+Michigan,0.755,0.139,0.05,0.034,N/A,N/A,0.018,1
+Minnesota,0.778,0.068,0.059,0.054,0.012,N/A,0.029,1
+Mississippi,0.575,0.376,0.027,0.006,N/A,N/A,0.014,1
+Missouri,0.775,0.115,0.055,0.024,N/A,N/A,0.025,1
+Montana,0.911,0.004,0.029,N/A,N/A,N/A,0.017,1
+Nebraska,0.777,0.045,0.132,0.01,0.02,N/A,0.015,1
+Nevada,0.504,0.091,0.283,0.078,N/A,N/A,0.029,1
+New Hampshire,0.889,0.012,0.04,0.046,N/A,N/A,N/A,1
+New Jersey,0.543,0.135,0.184,0.124,N/A,N/A,0.014,1
+New Mexico,0.405,0.02,0.442,0.015,N/A,N/A,0.015,1
+New York,0.559,0.136,0.19,0.098,N/A,N/A,0.01,1
+North Carolina,0.586,0.212,0.124,0.03,N/A,N/A,0.021,1
+North Dakota,0.828,0.031,0.041,0.021,0.065,N/A,N/A,1
+Ohio,0.778,0.125,0.05,0.019,N/A,N/A,0.028,1
+Oklahoma,0.614,0.069,0.132,0.025,0.089,N/A,0.069,1
+Oregon,0.763,0.019,0.112,0.055,N/A,N/A,0.033,1
+Pennsylvania,0.764,0.109,0.075,0.033,N/A,N/A,0.018,1
+Rhode Island,0.754,0.066,0.127,0.036,N/A,N/A,0.014,1
+South Carolina,0.623,0.254,0.077,0.017,N/A,N/A,0.022,1
+South Dakota,0.821,0.022,0.03,N/A,N/A,N/A,0.021,1
+Tennessee,0.715,0.162,0.081,0.016,0,N/A,N/A,1
+Texas,0.412,0.121,0.395,0.053,N/A,N/A,0.014,1
+Utah,0.81,0.01,0.126,0.017,N/A,N/A,0.016,1
+Vermont,0.938,0.014,N/A,N/A,N/A,N/A,0.024,1
+Virginia,0.62,0.187,0.1,0.065,N/A,N/A,0.023,1
+Washington,0.638,0.041,0.136,0.103,N/A,N/A,0.041,1
+West Virginia,0.904,0.034,0.026,N/A,N/A,N/A,0.027,1
+Wisconsin,0.812,0.051,0.088,0.029,N/A,N/A,0.016,1
+Wyoming,0.813,0.011,0.118,N/A,N/A,N/A,0.029,1
+,,,,,,,,
+Notes,,,,,,,,
+"For 2020, the majority of our health coverage topics are based on analysis of the Census Bureau’s March Supplement to the Current Population Survey (the CPS Annual Social and Economic Supplement or ASEC). Previously, our source for these data was the Census Bureau’s American Community Survey (ACS); however, release of the ACS data has been delayed due to the coronavirus pandemic. Although health coverage and population estimates using ACS are still available for 2008-2019, the 2020 data from CPS cannot be compared to prior year estimates from ACS. Due to known data quality issues with the 2019 CPS ASEC data, which was collected in March 2020 just at the onset of the pandemic and experienced low response rates, we have chosen not to report the 2019 data. We provide trend data for 2016, 2018, and 2020 using the CPS.",,,,,,,,
+Population numbers are rounded to the nearest 100.,,,,,,,,
+,,,,,,,,
+Sources,,,,,,,,
+"KFF estimates based on the Census Bureau's March Current Population Survey (CPS: Annual Social and Economic Supplements), 2017-2021.",,,,,,,,
+,,,,,,,,
+Definitions,,,,,,,,
+*N/A*: Estimates with relative standard errors greater than 30% are not provided.,,,,,,,,
+,,,,,,,,
+Persons of Hispanic origin may be of any race; all other racial/ethnic groups are non-Hispanic.,,,,,,,,
