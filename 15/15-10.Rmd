@@ -8,4 +8,36 @@ output: pdf_document
 ```{r, message=FALSE}
 rm(list = ls())
 library(rstanarm)
+library(rosdata)
 ```
+
+
+**15.10**
+
+
+Logistic regression and choice models: Using the individual-level survey data from the election
+example described in Section 10.9 (data in the folder NES), fit a logistic regression model for the
+choice of supporting Democrats or Republicans. Then interpret the output from this regression
+in terms of a utility/choice model.
+
+```{r}
+data <- rosdata::nes
+data$martial_status <- as.factor(data$martial_status)
+data$south <- as.factor(data$south)
+data$income <- as.factor(data$income)
+
+fit <- stan_glm(rvote ~ income+martial_status+south, family = binomial(link = "logit"), data = data, refresh = 0)
+
+print(fit)
+```
+
+
+I fit a logistic regression model to determine weather certain choices like affect one's likelihood of voting for Republicans. Since this is a choice/utility model, I did not include predictors such as age, sex, or race, as these models are meant to be interpreted for an individual's choices effects on utility, and one cannot control their race or their sex. One could argue that one's income is not entirely in their control, but we always have to make assumptions and since people in general can choose how many hours they work or their profession, I will consider it a choice. I also made income a factor since the income variable is classed into 5 categories.
+
+Lets exponentiate the logistic coefficients so that we may interpret them (I rounded to 2 digits):
+
+```{r}
+round(exp(coef(fit)), 2)
+```
+
+We see that belonging to a higher income category increases of voting Republican by 1.25 times. Being in marital statuses 2-4 and 7 decrease the odds of voting Republican relative to the baseline (marital status = 1), while being in marital status 5 increases the odds of voting by 1.15 times. Finally, being a southerner has a slight decreasing effect on odds of voting Republican.

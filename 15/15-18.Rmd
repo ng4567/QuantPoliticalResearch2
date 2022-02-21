@@ -1,0 +1,67 @@
+---
+title: "15-18"
+author: "Nikhil Gopal and Kerem Tuncer"
+date: "2/20/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(tidyverse)
+library(rstanarm)
+```
+
+
+Nikhil Gopal uni: nsg2127
+Kerem Tuncer uni: kt2716
+
+**Working through your own example: Continuing the example from the final exercises of the
+earlier chapters, fit a generalized linear model that is not a logistic regression, graph the data
+and fitted model, and interpret the estimated parameters and their uncertainties.**
+
+
+For this assignment, we used data from a Princeton University study on smoking and lung cancer. This data contains number of people surveyed in each category, their smoking status, their age group and how many people in that category/age group combination ended up dying of lung cancer.
+
+Import and clean data:
+
+```{r}
+data <- read.table("https://data.princeton.edu/wws509/datasets/smoking.dat", 
+           header=TRUE)
+
+colnames(data) <- c("age", "smoke", "pop", "dead")
+
+data$age <- as.factor(data$age)
+data$smoke <- as.factor(data$smoke)
+```
+
+We will model the relationships between age and smoking status to death rate. We fit a poisson regression using population as an offset (as population surveyed will directly relate to the amount of people who die). The regression coefficients tell us the percentage change in death rate for an individual who falls into a certain category.
+
+Fit model:
+
+```{r}
+data <- within(data, smoke <- relevel(smoke, ref = "no"))
+
+fit_1 <- stan_glm(dead ~ age + smoke, family=poisson(link="log"), offset = log(pop), data = data, refresh = 0)
+print(fit_1)
+```
+
+We have modeled the relationship between age and smoking status to death rate per individual. We fit a poisson regression using log(population) as an offset because the population size will effect the amount of people who die. The regression coefficients tell us the percentage change in death rate for an individual who falls into a certain category.
+
+The coefficient estimates of the age categories all have positive signs. Likewise, the coefficient estimate is increasing as the age group increases. This means that the death rate from lung cancer per individual increases as one gets older.
+
+On the other hand, the smokecigarPipeOnly has a coefficient estimate of zero, implying that it causes no change in the death rate per individual from lung cancer.
+
+The coefficient estimate for cigarette-only smokers is 0.4. Thus, the expected multiplicative increase is e^0.4 = 1.49, or a 49% positive difference in the death rate between none smokers and cigarette-only smokers. In other words, the death rate from lung cancer per individual is 49% higher for a cigarette smoker compared to a none smoker. 
+
+The coefficient estimate for cigarette and pipe/cigar smokers is 0.4. Thus, the expected multiplicative increase is e^0.2 = 1.22, or a 22% positive difference in the death rate between none smokers and cigarette and cigar/pipe smokers. In other words, the death rate from lung cancer per individual is 22% higher for a cigarette and cigar/pipe smoker compared to a none smoker.
+
+```{r}
+posterior_interval(
+  fit_1,
+  prob = 0.95,
+  type = "central",
+  pars = NULL,
+  regex_pars = NULL
+)
+```
+

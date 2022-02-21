@@ -1,0 +1,78 @@
+---
+title: "16-1-16-2"
+author: "Nikhil Gopal"
+date: "2/19/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+```
+
+**16.1**
+
+16.1 Sample size calculations for estimating a proportion:
+
++ How large a sample survey would be required to estimate, to within a standard error of ± 3%,
+the proportion of the U.S. population who support the death penalty?
+
+$$SE = \sqrt{p(1-p)/n}$$
+$$SE = \sqrt{p(1-p)/n}$$
+
+$$SE^2 = p(1-p)/n$$
+$$(SE^2)*n = p(1-p)$$
+$$n = p(1-p)/(SE^2)$$
+Assuming that the proportion of the population who supports the death penalty is 60%, we have:
+
+
+$$n = 0.6(0.4)/(0.03^2)$$
+$$n = 0.6(0.4)/(0.03^2)$$
+$$n  \approx{267}$$
+
++ About 14% of the U.S. population is Latino. How large would a national sample of Americans
+have to be in order to estimate, to within a standard error of ±3%, the proportion of Latinos
+in the United States who support the death penalty?
+
+$$n = p(1-p)/(SE^2)$$
+
+$$n = 0.14*0.6(1-(0.14*0.6))/(0.03^2)$$
+$$n \approx{85.49}$$
+
++ How large would a national sample of Americans have to be in order to estimate, to within a
+standard error of ± 1%, the proportion who are Latino?
+
+$$n = p(1-p)/(SE^2)$$
+$$n = 0.14(1-0.14)/(0.01^2)$$
+$$n = 1204$$
+
+**16.2**
+
+Sample size calculation for estimating a difference: Consider an election with two major
+candidates, A and B, and a minor candidate, C, who are believed to have support of approximately
+45%, 35%, and 20% in the population. A poll is to be conducted with the goal of estimating the
+difference in support between candidates A and B. How large a sample would you estimate
+is needed to estimate this difference to within a standard error of 5 percentage points? (Hint:
+consider an outcome variable that is coded as +1, −1, and 0 for supporters of A, B, and C,
+respectively.)
+
+
+Let Xa = 1 - power and Xb = power
+
+$$SE_d =  \sqrt{p_1(1-p_1)/(X_A*n)+p_2(1-p_2)/(X_B*n)}$$
+$$SE^2 =  p_1(1-p_1)/(X_A*n)+p_2(1-p_2)/(X_B*n)$$
+
+Assume a value of 80% for power, because the standard error is 5%: 
+
+$$0.05^2 =  0.45(1-0.45)/(0.2*n) + 0.35(1-0.35)/(0.8*n)$$
+
+$$0.0025 =  0.2475/(0.2*n) + 0.2275/(0.8*n)$$
+
+$$0.0025 =  0.2475/(0.2n) + 0.2275/(0.8n)$$
+
+$$0.0025n =  1.521875$$
+
+$$0.0025n =  1.2375 + 0.2275/(0.8)$$
+
+$$ n = 608.75 / n = 609$$
