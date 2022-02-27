@@ -1,0 +1,83 @@
+---
+title: "16-3-4-7"
+author: "Nikhil Gopal"
+date: "2/24/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+
+library("retrodesign")
+
+```
+
+**16.3**
+
+Power: Following Figure 16.3, determine the power (the probability of getting an estimate that
+is “statistically significantly” different from zero at the 5% level) of a study where the true effect
+size is X standard errors from zero. Answer for the following values of X: 0, 1, 2, and 3.
+
+
+```{r}
+
+print(pnorm(1.96, 0, 1, lower.tail = FALSE))
+print(pnorm(1.96, 1, 1, lower.tail = FALSE))
+print(pnorm(1.96, 2, 1, lower.tail = FALSE))
+print(pnorm(1.96, 3, 1, lower.tail = FALSE))
+
+```
+
+X = 0: 0.0249979.
+X = 1: 0.1685276.
+X = 2: 0.5159534.
+X = 3: 0.85083.
+
+**16.4**
+
+Power, type M error, and type S error: Consider the experiment shown in Figure 16.1 where the
+true effect could not realistically be more than 2 percentage points and it is estimated with a
+standard error of 8.1 percentage points.
+
+a:
+
+Assuming the estimate is unbiased and normally distributed and the true effect size is 2
+percentage points, use simulation to answer the following questions: What is the power of
+this study? What is the type M error rate? What is the type S error rate?
+
+
+```{r}
+retrodesign(A = 2, s = 8.1, n.sims = 10000000)
+```
+
+The power of this study is 0.05701294, the type S rate is 0.2396177 and the type M error rate is 9.535553.
+
+b: 
+
+Assuming the estimate is unbiased and normally distributed and the true effect size is no
+more than 2 percentage points in absolute value, what can you say about the power, type M
+error rate, and type S error rate?
+
+
+
+```{r}
+retrodesign(A = 2, s = 8.1)
+```
+
+An effect size of no more than 2 percentage points implies that the power cannot be more than 0.05701294, the type S error rate cannot be more than 0.2396177 and the type M rate cannot exceed 9.512305.
+
+**16.7**
+
+Decline effect: After a study is published on the effect of some treatment or intervention, it is
+common for the estimated effect in future studies to be lower. Give five reasons why you might
+expect this to happen.
+
++ First study might have had less resources, so a smaller sample would be taken and the effect size overestimated. Once it is established that something is of interest, more attention will be given and the effect size with more sample will be closer to the true value
+
++ Smaller journals might have less stringent standards for data quality, and once attention is given to something, better quality research might be performed.
+
++ The treatment effect could also be mitigated by the passage of time. If someone was measuring the prevalence of AIDS virus for example, proper testing, intervention and education could reduce its prevalence over time.
+
++ It might be an easy way for someone to gain attention and traction for their article by disagreeing or discrediting previously published research.
+
++ Collinearity could be an obvious culprit. If there is high correlation between one variable and another variable is actually responsible for the effect, when properly measured and accounted for later the effect of the original variable would be reduced.

@@ -1,0 +1,54 @@
+---
+title: "Homework 02/23"
+author: "Kerem Tuncer"
+output:
+  word_document: default
+  html_notebook: default
+---
+
+## Question 16.3
+
+```{r}
+for (i in 0:3){
+  print(pnorm(1.96, i, 1, lower.tail = FALSE))}
+```
+
+When X is 0, the power will be 0.0249979.
+When X is 1, the power will be 0.1685276.
+When X is 2, the power will be 0.5159534.
+When X is 3, the power will be 0.85083.
+
+## Question 16.4
+
+### Part A
+
+```{r}
+set.seed(1907)
+library("retrodesign")
+retrodesign(A = 2, s = 8.1, n.sims = 10000000)
+```
+
+
+The power will be 0.05701294. The type S rate will be 0.2396177. The type M error will be 9.534605.
+
+### Part B
+
+```{r}
+retrodesign(A = 0, s = 8.1, n.sims = 10000)
+retrodesign(A = 1, s = 8.1, n.sims = 10000)
+retrodesign(A = 1.5, s = 8.1, n.sims = 10000)
+```
+
+No more than 2 percentage points implies that the power cannot be more than 0.05701294. The type S error rate cannot be lower than 0.2396177. The type M error cannot be less than 9.534605.
+
+## Question 16.7
+
+One reason could be the phenomenon known as the regression to the mean. If the treatment effect was extremely high on the initial experiment, then the later experiments will regress towards the average which will be a lower true treatment effect.
+
+A second reason could be publication bias. Journals like to to publish results with higher treatment effects. Hence, the initial article may have higher results than the replication studies.
+
+A third reason could be data fabrication. If the author artificially increased the treatment effect, then truthful replications could give a lower treatment effect.
+
+A fourth reason could be that this treatment effect was found from a smaller sample size, which makes it easier to find extreme values. Future studies with larger sample sizes could have found smaller effects.
+
+A fifth reason could be related to the passage of time. In certain experiments, he treatment effect could decline over time.
