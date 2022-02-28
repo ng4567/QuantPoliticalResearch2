@@ -1,0 +1,120 @@
+---
+title: '17.1'
+author: "Nikhil Gopal"
+date: "2/27/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(rstanarm)
+library(rosdata)
+library(tidyverse)
+library(tidyr)
+```
+
+**17.1**
+
+
+Regression and poststratification: Section 10.4 presents some models predicting weight from
+height and other variables using survey data in the folder Earnings. But these data are not
+representative of the population. In particular, 62% of the respondents in this survey are women, as compared to only 52% of the general adult population. We also know the approximate distribution of heights in the adult population: normal with mean 763. inches and standard deviation 2.7 inches for women, and normal with mean 69.1 inches and standard deviation 2.9 inches for men.
+
++ a:
+
+Use poststratification to estimate the average weight in the general population, as follows: (i) fit a regression of linear weight on height and sex; 
+
+i:
+
+```{r}
+
+election <- rosdata::poll
+
+data <- rosdata::earnings
+
+fit <- stan_glm(weight~height+factor(male), data = data, refresh=0)
+
+print(fit)
+```
+
+
+ii:
+
+(ii) use posterior_epred to make predictions for men and women for each integer value of height from 50 through 80 inches; 
+
+```{r}
+
+p_male <- 1 - 0.52
+pop1 <- data.frame(male = c(0, 1), N = c(1 - p_male, p_male))
+pop2 <- NULL
+cut <- c(0, seq(50, 80, 1), 999)
+for (i in 1:(length(cut)-1)){
+   # male height distribution in the population  
+   m_h <- pnorm(cut[i + 1], 69.1, 2.9) -  pnorm(cut[i], 69.1, 2.9)
+   # female height distribution 
+   f_h <- pnorm(cut[i + 1], 63.7, 2.7) -  pnorm(cut[i], 63.7, 2.7)
+   pop2 <- bind_rows(pop2, 
+                     data.frame(height = cut[i], male = 1, N = m_h),
+                     data.frame(height = cut[i], male = 0, N = f_h))
+}
+
+pop2$N <- ifelse(pop2$male == 1, p_male * pop2$N, (1 - p_male) * pop2$N)
+
+#expected value
+epreds <- posterior_epred(fit, newdata = pop2)
+
+
+```
+
+
+iii:
+
+(iii) poststratify using a discrete approximation to the normal distribution for heights given sex, and the known proportion of men and women in the population. Your result should be a set of simulation draws representing the population average weight. Give the median and mad sd of this distribution: this represents your estimate and uncertainty about the population average weight
+
+
+```{r}
+poststrat2 <- epreds %*% pop2$N 
+median(poststrat2)
+mad(poststrat2)
+```
+
+The mean was 154.3979 and the mad sd was 0.7585279.
+
++ b: 
+
+Repeat the above steps, this time including the height:female interaction in your fitted
+model before poststratifying.
+
+
+```{r}
+fit2 <- stan_glm(weight ~ height+factor(male)+ height:factor(male), data = data, refresh=0)
+
+print(fit2)
+
+
+pred2 <- posterior_epred(fit2, newdata = pop2)
+poststrat2 <- pred2 %*% pop2$N 
+median(poststrat2)
+mad(poststrat2)
+```
+The mean was 154.2174 and the MAD sd was 0.7453965
+
++ c:
+
+Repeat (a) and (b), this time performing a regression of log(weight) but still with the goal of estimating average weight in the population, so you will need to exponentiate your predictions in step (ii) before poststratifying.
+
+```{r}
+
+fit3 <- stan_glm(log(weight) ~ height+factor(male), data = data, refresh=0)
+
+
+print(fit3)
+
+
+pred3 <- exp(posterior_epred(fit3, newdata = pop2))
+poststrat3 <- pred3 %*% pop2$N 
+median(poststrat3)
+mad(poststrat3)
+```
+
+The mean was 152.1696 and the MAD sd was 0.7160717.

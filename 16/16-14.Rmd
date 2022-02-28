@@ -1,0 +1,16 @@
+---
+title: "16-14"
+author: "Nikhil Gopal"
+date: "2/27/2022"
+output: pdf_document
+---
+
+
+```{r}
+rm(list = ls())
+```
+
+**16-14**
+
+Working through your own example: Continuing the example from the final exercises of the
+earlier chapters, think of a new data survey, experiment, or observational study that could be relevant and perform a design analysis for it, addressing issues of measurement, precision, and sample size. Simulate fake data for this study and analyze the simulated data.
