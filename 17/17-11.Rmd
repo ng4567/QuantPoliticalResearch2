@@ -1,0 +1,19 @@
+---
+title: '17.11'
+author: "Nikhil Gopal"
+date: "2/27/2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+```
+
+**17.11**
+
+Working through your own example: Continuing the example from the final exercises of the
+earlier chapters, perform multiple imputation for missing data (in earlier analyses, you may have
+just excluded cases with missingness) and then compare one of your earlier regression results to
+what you obtain with the imputed datasets.

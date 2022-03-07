@@ -1,0 +1,91 @@
+---
+title: "Pairs Assignment 03/07"
+author: "Kerem Tuncer and Nikhil Gopal"
+output: html_notebook
+---
+
+## Question 17.11
+
+For this question, we will be looking at our past analysis from 17.1 with the earnings dataset.
+
+```{r}
+library(rstanarm)
+data <- read.csv("https://raw.githubusercontent.com/avehtari/ROS-Examples/master/Earnings/data/earnings.csv")
+```
+
+```{r}
+sum(is.na(data$height))
+sum(is.na(data$weight))
+sum(is.na(data$male))
+```
+
+We have 27 missing observations in our dependent variable. Now, we will do multiple imputation using simple random imputation. Here is the code for the random imputation.
+
+```{r}
+random_imp <- function(a) {
+  missing <- is.na(a)
+  n_missing <- sum(missing)
+  a_obs <- a[!missing]
+  imputed <- a
+  imputed[missing] <- sample(a_obs, n_missing)
+  imputed
+}
+```
+
+Then, we will use a for-loop to run 10 iterations of our original regression. The loop will extract the coefficient estimates and their standard errors. In the end, we will have a dataframe with 10 rows and 6 columns, where each row gives us the three coefficient estimates (including the intercept) and their se.
+
+```{r}
+vector <- matrix(ncol = 6, nrow = 10)
+
+for (i in 1:10){
+data$weight_imp <- random_imp(data$weight)
+fit <- stan_glm(weight_imp ~ height+factor(male) , data = data, refresh=0)
+vector[i,] <- c(fit$coefficients, fit$ses)
+}
+
+imputed_output <- as.data.frame(vector)
+imputed_output
+```
+
+The V2 variable will be the height coefficient and the V3 variable will be the male coefficient. According to page 326 of the textbook, the average of these 10 iterations will give an overall point estimate.
+
+```{r}
+average_beta_height <- mean(imputed_output$V2)
+average_beta_male <- mean(imputed_output$V3)
+```
+
+Then, we will use the formula on page 326 to get the overall standard errors for height and male.
+
+Let's first do it for height. The V5 variable is its standard error.
+
+```{r}
+within_variance <- sum(imputed_output$V5^2)/10
+between_variance <- sum((imputed_output$V2-average_beta_height)^2)/9
+
+se_b_height <- sqrt(within_variance + (1+1/10)*between_variance)
+```
+
+Now, let's first do it for male. The V6 variable is its standard error.
+
+```{r}
+within_variance <- sum(imputed_output$V6^2)/10
+between_variance <- sum((imputed_output$V3-average_beta_male)^2)/9
+
+se_b_male <- sqrt(within_variance + (1+1/10)*between_variance)
+```
+
+Finally, let's compare it to our original regression without imputation.
+
+```{r}
+fit_1 <- stan_glm(weight ~ height+factor(male), data = data, refresh=0, )
+fit_1$coefficients
+fit_1$ses
+
+average_beta_height
+average_beta_male
+se_b_height
+se_b_male
+```
+
+There was a slight decrease in our estimate of the height variable. Meanwhile, there was a slight increase in our estimate of the male variable. Also, our new standard errors were higher than the original, which means that our original analysis without imputation had a higher certainty. Given that there were only 27 missing observations, it makes sense that the values did not change much.
+

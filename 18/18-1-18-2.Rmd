@@ -1,0 +1,34 @@
+---
+title: "18-1-18-2"
+author: "Nikhil Gopal"
+date: "3/6/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+```
+
+**18.1**
+
+Designing an experiment: Suppose you are interested in the effect of the presence of vending
+machines in schools on childhood obesity. What controlled experiment would you want to do
+(in a world without ethical, logistical, or financial constraints) to evaluate this question?
+
+We know that obesity is caused by poor diet and lack of exercise. The best way to measure the exact effect that a vending machine would have on child obesity is to carefully record all of the food that goes into the children's bodies, and also to track the amount of calories burned throughout the day. Maybe survey 200 schools, and randomly select 100 schools to give vending machines to, and assign the other 100 schools to be controls. There should be a representative sample of schools, so the sample of 200 schools should be randomly sampled for schools from all over the world.
+
+Since some schools have different numbers of students, vending machines should be placed at various locations around the school in areas that students frequent at a rate of 1 vending machine per 200 students, or 1 vending machine per school if the school has less than 200 students. This will ensure that every student who wants to use a vending machine may do so. Finally, give every student a fitbit or similar product to track their calories burned throughout the day, and have each student record their calorie intake for all food consumed. For each student who goes to a school in the treatment group, data should be collected on weather calories consumed came from vending machine products.
+
+At the end of the study, data can be examined to see how many more students ended up being obese in the schools with vending machines, and exactly how many calories consumed came from vending machine related foods. 
+
+**18.2**
+
+Designing an experiment with ethical constraints: Suppose you are interested in the effect of
+smoking on lung cancer. What controlled experiment could you plausibly perform (in the real
+world) to evaluate this effect?
+
+The best way to test smoking's effects on cancer would be to randomly assign individuals to treatment and control groups, and then give all those in the treatment group cigarettes and then measure and compare the rates of lung cancer death and onset between the two groups. However, it is unethical to expose study participants to potentially dangerous substances.
+
+Whenever one goes to the doctor, the doctor collects information on cigarette usage. In some countries, not everyone visits the doctor regularly or has medical coverage, so we will choose a country like France with universal medical coverage and a relatively higher rate of cigarette consumption. One could conduct an observational study scrutinizing French medical records from doctor visits, and compare rates of lung cancer contraction and death between French smokers and non smokers, as well as between non smokers and smokers of different frequencies. 
+
+Provided that all data could be analyzed in an efficient manner, this would provide a near complete survey of the population, and would also provide data on the effect of stopping smoking on reducing lung cancer rates, as doctors would be able to make note of this information at yearly visits.
