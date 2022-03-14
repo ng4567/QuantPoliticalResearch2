@@ -1,0 +1,56 @@
+---
+title: "19-3"
+author: "Nikhil Gopal"
+date: "3/14/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+library(rstanarm)
+library(rosdata)
+library(tidyverse)
+```
+
+
+**19.3**
+
+Gain scores: In the discussion of gain-score models in Section 19.3, we noted that if we include
+the pre-treatment measure of the outcome in a gain score model, the coefficient on the treatment
+indicator will be the same as if we had just run a standard regression of the outcome on the
+treatment indicator and the pre-treatment measure. Show why this is true.
+
+This data set comprises data from classrooms, that measure effect of the Electric Company educational television program on child reading scores. The treatment column indicates weather students were assigned to a class that watched the show, and the pre_test and post_test columns give the score of each class room at the beginning and end of the study. 
+
+
+To investigate the claim in the question, I made a gain_score column by subtracting the pre treatment test score from the post treatment test score.
+
+```{r}
+df <- rosdata::electric
+
+df$gain_score <- df$post_test - df$pre_test
+
+#gain score model with pre treatment indicator as the outcome
+fit_gain <- stan_glm(gain_score ~ pre_test + treatment, data = df, refresh = 0)
+
+#standard regression of outcome onto the treatment indicator and pre-treatment measure
+fit_standard <- stan_glm(post_test ~ pre_test + treatment, data = df, refresh = 0)
+```
+
+
+```{r}
+
+df %>% group_by(treatment) %>%
+  summarise(improvement = mean(gain_score))
+```
+
+I fit two regression models, one where I regressed the pre treatment score and the treatment variable onto the gain score, and one standard regression where I regressed the pre treatment score and the treatment variable onto the post treatment score:
+
+```{r}
+print(fit_gain)
+
+print(fit_standard)
+```
+
+
+We see that in both models, the coefficient on the treatment indicator is 4.7. Thus, we can confirm that the claim in the question is true.

@@ -1,0 +1,28 @@
+---
+title: "18-18"
+author: "Nikhil Gopal"
+date: "3/14/2022"
+output: pdf_document
+---
+
+```{r, message=FALSE}
+rm(list = ls())
+```
+
+Nikhil Gopal and Kerem Tuncer
+
+**18.18**
+
+Working through your own example: Continuing the example from the final exercises of the
+earlier chapters, frame a substantive question in terms of the effect of a binary treatment. For this
+example, explain what are the outcome variable y, the treatment variable z, the pre-treatment
+variables x, and the potential outcomes y0 and y1.
+
+
+We would like to investigate weather a ketogenic (keto) diet causes weight loss. Keto diets typically perscribe that 70% of calorie intake comes from fats, 20% from protein, and 10% from carbs. It is theorized that having such a small proportion of calories coming from carbs will induce a biological state called ketosis, which will result in a higher rate of fat burning than normal. To measure the specific effect of the keto diet, both our treatment and control groups will eat the same amount of calories, as defined by the maintenence calorie level for each individual's body weight. 
+
+We will test 500 individuals over 1 year, and assign 250 to the keto treatment group, and 250 to the control group, allowing the control group to eat whatever diet they want, provided that they eat the perscribed amount of calories. This will ensure that we can directly measure the effect of the keto diet on weight loss.
+
+Pre-treatment variables will include height, weight, and binary variables indicating weather someone is a regular nicotine or caffeine user, as both of these drugs are known to supress apetite, and to give bursts of energy during exercise. Additionally, it is widely known that exercise burns calories, so patients will also be asked to indicate how many times per week they exercise for at least 30 minutes.
+
+The first outcome variable y0 will be the difference in weight between the start and the end of the study, and will attempt measure how effective the diet was in causing weight loss. Also of interest is weather or not patients gained or loss muscle mass, as gaining body fat is traditionalyl viewed as unhealthy, while gaining muscle is viewed as healthy. It would also be of interest to examine the effect of the diet on muscle mass, so y1 will be the difference in muscle mass between the beginning and the end of the study.
