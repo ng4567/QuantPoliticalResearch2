@@ -7,30 +7,32 @@ output: pdf_document
 
 ```{r, message=FALSE, echo=FALSE}
 rm(list = ls())
-library(rstanarm)
-library(rosdata)
-library(tidyverse)
 ```
 
 
 **19.4**
-*Pre-test and post-test:* 100 students are given a pre-test, then a treatment or control is randomly
-assigned to each, then they get a post-test. Given the following regression model:
+*Pre-test and post-test:* 100 students are given a pre-test, then a treatment or control is randomly assigned to each, then they get a post-test. Given the following regression model:
 
-                            post_test = a + b * pre_test + theta * z + error  
+$$post-test = \alpha + b * pre-test + \theta * z + error$$  
 
-where z = 1 for treated units and theta for controls. Further suppose that pre_test has mean 40
-and standard deviation 15. Suppose b = 0.7 and theta = 10 and the mean for post_test is 50 for
-the students in the control group. Further suppose that the residual standard deviation of the
-regression is 10.
+where z = 1 for treated units and theta for controls. Further suppose that pre_test has mean 40 and standard deviation 15. Suppose b = 0.7 and theta = 10 and the mean for post_test is 50 for the students in the control group. Further suppose that the residual standard deviation of the regression is 10.
 
 + a) Determine *a*
 
 
+The mean of the post_test score is 50, and the mean of the pre_treatment score is 40, so the effect size $\alpha = 50-40 = 10$
+
 + b) What is the standard deviation of the post-test scores for the students in the control group?
+
+It should be 10 + the error.
+
 + c) What are the mean and standard deviation of the post-test scores in the treatment group?
 
+$$posttest = 10 + 0.7(40) + 10(1) + error$$
 
+$$posttest = 48$$
+
+The mean will be 48 and the standard deviation will be the error.
 **19.5**
 
 *Causal inference using logistic regression*: Suppose you have fit a model:
@@ -47,11 +49,10 @@ vector n_pop of length 82 that has the number of people in the population at eac
 through 99:
 
 ```{r, eval=FALSE}
-
 predictions$effect <- predict(fit, n_pop)
 
-avg_effect <- mean(exp(predictions$effect))
+avg_effect <- mean(predictions$effect)
 
-st_err <-sd(predictions$effect)/sqrt(82)
+st_err <-sd(predictions$effect)/length(n_pop)
 ```
 
