@@ -1,0 +1,19 @@
+---
+title: "Pairs Assignment 03/21"
+author: "Kerem Tuncer and Nikhil Gopal"
+output:
+  word_document: default
+  html_notebook: default
+---
+
+## Question 18.18
+
+We would like to investigate whether nicorette gums decrease cigarette smoking among adults. Nicorette is a type of medicinal gum that aids smoking cessation. For our study, we will recruit 500 adult smokers. Then, we will use complete randomization to randomly assign 250 smokers to the nicorette treatment group and 250 smokers to the control group, which will receive a placebo consisting of a normal chewing gum. Therefore, the binary treatment indicator for a participant will be 1 if they are receive a nicorette gum and 0 if they receive the placebo.
+
+To potentially decrease the standard error of our estimated average treatment effect, we will record numerous pre-treatment variables before the treatment is administered. These pre-treatment variables will include sex, age, weight, years of smoking, and number of cigarettes smoked per day. All of these pre-treatment variables have the potential to produce varying conditional average treatment effects.
+
+Our study will take place for 1 month, where the partipants in both experimental groups will chew 3 gums a day: one right before breakfast, one right before lunch, and one right before dinner. We will tell the participants to participants to record how many cigarettes they have smoked in total for this whole month. This value - the total number of cigarettes smoked - will be divided by 30 (the number of days in a month) to arrive at the outcome variable y, which will be the average number of cigarettes smoked per day.
+
+Hence, the y_0 - which is the untreated potential outcome - will be the average number of cigarettes smoked in a day if the participant had received the placebo. Similarly, the y_1 - which is the treated potential outcome - will be the average number of cigarettes smoked per day if the participant had received the treatment.
+
+At the end of the study, we will be able to estimate the average treatment effect of a nicorette gum. The estimated ATE will describe how many cigarettes less/more are smoked in a day because of nicorette gums.
