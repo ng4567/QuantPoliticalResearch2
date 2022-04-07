@@ -1,0 +1,58 @@
+---
+title: "21-1-15-17"
+author: "Nikhil Gopal"
+date: "4/6/2022"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+rm(list = ls())
+```
+
+**21.1**
+
++ a)
+
+We would pick the fourth option, the regression of y on u, and the regression of v on u.
+
++ b)
+
+We would need to assume that there is ignorability of the instrument, which is met since the treatment was randomly assigned. We can also confirm that the monotonicity assumption is met, as there are students who would access the site regardless of being assigned to the treatment group. The next assumption is the nonzero treatment effect, and we can confirm this assumption as well as this is our explanatory variable, so we will definitely assume that being shown an encouraging message affects one's likelihood of clicking on the link. Finally, we have the exclusion restriction, which we can confirm because there is zero effect on outcome for students who's behavior would not be changed by being assigned to the treatment.
+
+
+**21.15**
+
++ a)
+
+Explain why it is inappropriate to include money as an additional input variable to 
+“improve” the estimate of incumbency advantage in the regression in Exercise 19.10.
+
+This variable is a post-treatment variable, meaning that incumbency likely affects it, meaning it is therefore impoper to use money to improve the estimate of incumbency advantage.
+
++ b)
+
+Suppose you are interested in estimating the effect of money on the election outcome. Set
+this up as a causal inference problem (that is, define the treatments and potential outcomes).
+
+Let a equal the median total donation money received by each candidate in an election (less than any hypothetical money allocated to each candidate by the state). Define the treatment potential as those candidates who recieve donation amounts > a, and setup a regression with the outcome variable indicating if a candidate won or lost the election.
+
++ c)
+
+All assumptions would be satisfied except the ignorability of the instrument assumption. Random assignment of treatment is impossible, unless one were to choose an election with no donations, and have a sum of money with which they randomly assign to candidates, which would certainly never happen. Therefore, using an instrumental variable is not appropriate.
+
++ d)
+
+
+Money is also not like a drug in a clinical trial, and using a treatment/control methodology is not appropriate. Using money as a continuous variable would make more sense. Additionally, it would be interesting to see the relative importance of money to other variables. One good technique would be multiple logistic regression for example, with many variables as predictors, and the candidate's election result as the outcome.
+
+**21.17**
+
+One potential experiment is examining the relationship between alcohol and cancer. It is widely postulated that alcohol consumption increases one's risk of developing cancer. We could assign study participants to treatment and control groups, where the treatment group is given alcohol and the control group is just given an equivalent volume of water.
+
+Below are some possible associated experiments that could be done to estimate relevant causal effects:
+
+Investigating weather age of alcohol consumption affects the risk. Assign one group to drink only between the ages of 20-30, and the other group to drink only between ages of 40-50.
+
+Does type of alcohol affect risk? Assign one group to drink more sugary drinks like cocktails and other groups to solely drink hard alcohol/water cocktails.
+
+Another important causal effect is genetics/family history of disease. A study should be done to compare the rates of cancer between alcohol consumers who have family histories of cancer, and those who do not.
