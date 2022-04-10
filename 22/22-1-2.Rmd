@@ -1,0 +1,133 @@
+---
+title: "22-1-2"
+author: "Nikhil Gopal"
+date: "4/8/2022"
+output: pdf_document
+---
+
+```{r, echo=FALSE, message = FALSE}
+rm(list = ls())
+library(rstanarm)
+library(ggplot2)
+```
+
+**21.1**
+
+Measurement error in y: Simulate data (x, y)i, i = 1,..., n from a linear regression model,
+y = a + bx + error, but suppose that the outcome y is not observed directly, but instead we
+observe v = y + error, with independent measurement errors with mean zero. Use simulations
+to understand the statistical properties of the observed-data regression of v on x, compared to
+the desired regression of y on x.
+
+
+```{r}
+df <- data.frame(
+  "x" <- rnorm(10000, mean = 0, sd = 1),
+  "y" <- rnorm(10000, mean = 400, sd = 20)
+  )
+colnames(df) <- c("x", "y")
+
+df$v <- df$y + rnorm(1, mean = 0, sd = 40)
+
+```
+
+Above I generated the data with 10000 observations. I made x a normal random variable with mean 0 and sd 1, and y a normal random variable with mean 400 and sd 20. Finally, I made v equal to y plus a random variable with mean 0 and sd 40. Below we will fit and compare the regressions:
+
+```{r}
+set.seed(123)
+
+fit_y <- stan_glm(y~x, data = df, refresh = 0)
+fit_error <- stan_glm(v~x, data = df, refresh = 0)
+
+print(fit_y)
+print(fit_error)
+```
+
+For the first regression without error, the intercept term was 400.3 and the coefficient of x was 0.1. The SD for the coefficients was 0.2. For the regression with error, the standard deviations and x coefficient was the same, but the intercept term changed to 427.7. It makes sense that it would be a little higher as V has mean 400 + error, whereas Y has mean 400. In fact, the mean of all the observations in the V column was 427.
+
+Below we will compare regression fit:
+
+```{r}
+ggplot(df, aes(x = x, y = y)) +
+  geom_point(size = 1, position = position_jitter(height = 0.05, width = 0.1)) + 
+  geom_abline(intercept = coef(fit_y)[1], slope = coef(fit_y)[2], color = "skyblue4", size = 1) + 
+  ggtitle ("X vs Y with Regression Line Overlayed")
+
+
+ggplot(df, aes(x = x, y = v)) +
+  geom_point(size = 1, position = position_jitter(height = 0.05, width = 0.1)) + 
+  geom_abline(intercept = coef(fit_y)[1], slope = coef(fit_y)[2], color = "skyblue4", size = 1) + 
+  ggtitle ("X vs V with Regression Line Overlayed")
+
+
+plot(fit_y$residuals, fit_error$residuals, main = "Scatter Plot of Residuals of Regressions")
+```
+
+
+We don't observe a significant difference in model fit. Both models seem to have the same fit when the regression line is overlayed.
+
+```{r}
+sd(fit_y$residuals) 
+sd(fit_error$residuals)
+```
+
+Both regressions have the same standard deviation of their residuals.
+
+**22.2**
+
+Measurement error in x: Simulate data (x, y)i, i = 1,..., n from a linear regression model,
+y = a + bx + error, but suppose that the predictor x is not observed directly, but instead we
+observe u = x + error, with independent measurement errors with mean zero. Use simulations
+to understand the statistical properties of the observed-data regression of y on u, compared to
+the desired regression of y on x.
+
+
+
+```{r}
+df <- data.frame(
+  "x" <- rnorm(10000, mean = 0, sd = 1),
+  "y" <- rnorm(10000, mean = 400, sd = 20)
+  )
+colnames(df) <- c("x", "y")
+
+df$u <- df$x + rnorm(1, mean = 0, sd = 40)
+
+```
+
+I generated data with the same qualities as above, except I added error to the x term instead of the y term this time and called that variable u.
+
+```{r}
+set.seed(123)
+
+fit_x <- stan_glm(y~x, data = df, refresh = 0)
+fit_x_error <- stan_glm(y~u, data = df, refresh = 0)
+
+print(fit_x)
+print(fit_x_error)
+```
+
+Both of these regressions had essentially the same coefficients and intercept values.
+
+```{r}
+ggplot(df, aes(x = x, y = y)) +
+  geom_point(size = 1, position = position_jitter(height = 0.05, width = 0.1)) + 
+  geom_abline(intercept = coef(fit_y)[1], slope = coef(fit_y)[2], color = "skyblue4", size = 1) + 
+  ggtitle ("X vs Y with Regression Line Overlayed")
+
+
+ggplot(df, aes(x = u, y = y)) +
+  geom_point(size = 1, position = position_jitter(height = 0.05, width = 0.1)) + 
+  geom_abline(intercept = coef(fit_y)[1], slope = coef(fit_y)[2], color = "skyblue4", size = 1) + 
+  ggtitle ("U vs Y with Regression Line Overlayed")
+
+
+plot(fit_x$residuals, fit_x_error$residuals, main = "Scatter Plot of Residuals of Regressions")
+```
+
+```{r}
+sd(fit_x$residuals) 
+sd(fit_x_error$residuals)
+```
+
+
+There did not appear to be a big difference in model fit between both cases. I suspect this to be because the mean error was 0, and there was a large sample size (10000). I think the effects of error on y or x would definitely be more pronounced in a situation where the mean of the error distribution was not equal to zero, or in studies with small sample sizes.
