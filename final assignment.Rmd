@@ -1,0 +1,18 @@
+---
+title: "Final Assignment"
+author: "Nikhil Gopal"
+date: "4/19/2022"
+output: pdf_document
+---
+
+```{r, echo=FALSE, message = FALSE}
+rm(list = ls())
+```
+
+Nikhil Gopal/Kerem Tuncer
+unis: nsg2127,kt2716
+
+Summarize what you have learned about your example from all the analysis you have done during the semester.
+
+
+In this assignment, we also attempted to use imputation to increase the accuracy of our coefficient estimates and decrease our coefficient standard errors. There were 27 missing values out of 1816, and we used random imputation to fill up the missing data. This actually resulted in an increase in standard errors. We learned that imputation should be employed extremely carefully, and other methods of imputation like using regression to predict missing values or using sample population averages might be better than just generating values randomly. Additionally, imputation's effects will likely be more pronounced when a larger proportion of data is missing. It should however, be discussed why certain data is missing. Methods such as missing data plots should also be used to idenitfy any previously undiscovered patterns/trends.

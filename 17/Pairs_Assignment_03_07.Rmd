@@ -1,7 +1,9 @@
 ---
 title: "Pairs Assignment 03/07"
 author: "Kerem Tuncer and Nikhil Gopal"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 ## Question 17.11
